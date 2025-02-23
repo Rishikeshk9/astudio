@@ -13,7 +13,7 @@ import DataTable from '@/components/DataTable';
 import Pagination from '@/components/Pagination';
 import Filters from '@/components/Filters';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { User } from '@/types';
+import type { User } from '@/types';
 
 export default function UsersPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,7 @@ export default function UsersPage() {
     useSelector((state: RootState) => state.users);
 
   // Local state for filtered data and filter values
-  const [filteredData, setFilteredData] = useState<User[]>(items);
+  const [filteredData, setFilteredData] = useState<User[]>([]);
   const [nameFilter, setNameFilter] = useState('');
   const [emailFilter, setEmailFilter] = useState('');
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
@@ -45,6 +45,11 @@ export default function UsersPage() {
     }
     return age;
   };
+
+  // Set filtered data when items change
+  useEffect(() => {
+    setFilteredData(items);
+  }, [items]);
 
   // Fetch users when page or page size changes
   useEffect(() => {

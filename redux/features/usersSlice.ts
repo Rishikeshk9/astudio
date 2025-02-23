@@ -1,14 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  // Add other user fields as needed
-}
+import type { User } from '@/types';
 
 interface UsersState {
   items: User[];
@@ -33,7 +25,7 @@ const initialState: UsersState = {
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async ({ skip, limit }: { skip: number; limit: number }) => {
-    const response = await axios.get(
+    const response = await axios.get<{ users: User[]; total: number }>(
       `https://dummyjson.com/users?skip=${skip}&limit=${limit}`
     );
     return response.data;
