@@ -2,20 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Neutra Text';
+  src: url('https://fonts.cdnfonts.com/css/neutra-text-alt?styles=16189,16192,16193,16190,16191')
+      format('woff2'),
+    url('https://fonts.cdnfonts.com/css/neutra-text-alt?styles=16189,16192,16193,16190,16191')
+      format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #322625;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #322625;
+    --foreground: #322625;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Neutra Text', Arial, Helvetica, sans-serif;
 }
