@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { CalendarIcon } from '@heroicons/react/24/outline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 // Define types for filter options and date range
 interface FilterOption {
@@ -92,7 +92,7 @@ function FilterDropdown({
         className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900'
       >
         <span>{label}</span>
-        <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+        <FontAwesomeIcon icon={faCaretDown} className='h-3 w-3 text-gray-700' />
       </button>
 
       {isOpen && (
@@ -181,7 +181,7 @@ function SearchOnlyDropdown({
         className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900'
       >
         <span>{label}</span>
-        <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+        <FontAwesomeIcon icon={faCaretDown} className='h-3 w-3 text-gray-700' />
       </button>
 
       {isOpen && (
@@ -244,7 +244,7 @@ function DateRangeDropdown({
         className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900'
       >
         <span>{label}</span>
-        <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+        <FontAwesomeIcon icon={faCaretDown} className='h-3 w-3 text-gray-700' />
       </button>
 
       {isOpen && (
@@ -308,7 +308,7 @@ function GenderDropdown({
         className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900'
       >
         <span>Gender</span>
-        <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+        <FontAwesomeIcon icon={faCaretDown} className='h-3 w-3 text-gray-700' />
       </button>
 
       {isOpen && (
@@ -332,6 +332,66 @@ function GenderDropdown({
               />
               <span className='text-sm text-gray-700'>{gender}</span>
             </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Create a reusable dropdown component for entries per page
+function EntriesDropdown({
+  value,
+  options,
+  onChange,
+}: {
+  value: number;
+  options: FilterOption[];
+  onChange: (value: number) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className='relative' ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900  align-middle'
+      >
+        <p>{value} </p>
+        <FontAwesomeIcon icon={faCaretDown} className='h-3 w-3 text-gray-700' />
+        <p>Entries</p>
+      </button>
+
+      {isOpen && (
+        <div className='absolute top-full left-0 mt-1 w-32 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10'>
+          {options.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => {
+                onChange(Number(option.value));
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
+                value === option.value ? 'text-blue-600' : 'text-gray-700'
+              }`}
+            >
+              {option.label}
+            </button>
           ))}
         </div>
       )}
@@ -428,22 +488,13 @@ export default function Filters({
 
       <div className='flex items-center justify-between border-b border-gray-200 pb-4'>
         <div className='flex items-center gap-8'>
-          <div className='flex items-center gap-2'>
-            <select
-              value={pageSize}
-              onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className='rounded border border-gray-300 bg-white px-3 py-1.5 pr-8 text-sm focus:border-gray-400 focus:outline-none appearance-none'
-            >
-              {pageSizeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <span className='text-sm text-gray-600'>Entries</span>
-          </div>
+          <EntriesDropdown
+            value={pageSize}
+            options={pageSizeOptions}
+            onChange={onPageSizeChange}
+          />
 
-          <div className='h-6 w-px bg-gray-300'></div>
+          <div className='h-6 w-[3px] bg-gray-300'></div>
 
           <div className='flex items-center gap-4'>
             <button
@@ -466,7 +517,7 @@ export default function Filters({
             />
           </div>
 
-          <div className='h-6 w-px bg-gray-300'></div>
+          <div className='h-6 w-[3px] bg-gray-300'></div>
 
           <div className='flex items-center gap-6'>
             {type === 'users' ? (

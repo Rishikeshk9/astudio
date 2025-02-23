@@ -153,8 +153,10 @@ export default function ProductsPage() {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(filteredData.length / pageSize)}
         onPageChange={(page) => dispatch(setCurrentPage(page))}
+        totalItems={total}
+        pageSize={pageSize}
+        skip={currentPage * pageSize}
       />
     </div>
   );

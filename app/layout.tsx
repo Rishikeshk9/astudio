@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className='bg-gray-50 font-neutra'>
+      <body className='bg-gray-50  '>
         <Providers>
           <nav className='bg-gray-800 text-white p-4'>
             <div className='container mx-auto flex gap-4'>

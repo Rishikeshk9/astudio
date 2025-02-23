@@ -3,15 +3,18 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Neutra Text';
-  src: url('https://fonts.cdnfonts.com/css/neutra-text-alt?styles=16189,16192,16193,16190,16191')
-      format('woff2'),
-    url('https://fonts.cdnfonts.com/css/neutra-text-alt?styles=16189,16192,16193,16190,16191')
-      format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+  font-family: 'Neutra Text Bold';
+  src: url('../public/fonts/NeutraText-Bold.otf');
 }
+
+@font-face {
+  font-family: 'Neutra Text Book';
+  src: url('../public/fonts/NeutraText-Book.otf');
+}
+/* @font-face {
+  font-family: 'glory';
+  src: url('../public/assets/glory.ttf');
+} */
 
 :root {
   --background: #ffffff;
@@ -28,5 +31,10 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Neutra Text', Arial, Helvetica, sans-serif;
+  font-family: 'Neutra Text Book', Arial, Helvetica, sans-serif;
+}
+
+th {
+  font-family: 'Neutra Text Bold', 'Neutra Text Book', Arial, Helvetica,
+    sans-serif;
 }

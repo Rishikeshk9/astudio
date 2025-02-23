@@ -29,6 +29,23 @@ export default function UsersPage() {
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
 
+  // Helper function to calculate age from birthdate
+  const calculateAge = (birthDate: string): number => {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    // Adjust age if birthday hasn't occurred this year
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birth.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   // Fetch users when page or page size changes
   useEffect(() => {
     dispatch(
@@ -61,14 +78,18 @@ export default function UsersPage() {
       );
     }
 
-    // Filter by date range
+    // Filter by age range calculated from date range
     if (dateRange.from || dateRange.to) {
       filtered = filtered.filter((user) => {
-        const birthDate = new Date(user.birthDate);
-        if (dateRange.from && birthDate < new Date(dateRange.from))
-          return false;
-        if (dateRange.to && birthDate > new Date(dateRange.to)) return false;
-        return true;
+        const userAge = calculateAge(user.birthDate);
+
+        // Convert dates to ages for comparison
+        const fromAge = dateRange.to ? calculateAge(dateRange.to) : 0;
+        const toAge = dateRange.from ? calculateAge(dateRange.from) : 150; // Using 150 as maximum age
+
+        // Compare ages instead of dates
+        // Note: We swap from/to because older birthdate = younger age
+        return userAge >= fromAge && userAge <= toAge;
       });
     }
 
@@ -131,8 +152,10 @@ export default function UsersPage() {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(filteredData.length / pageSize)}
         onPageChange={(page) => dispatch(setCurrentPage(page))}
+        totalItems={total}
+        pageSize={pageSize}
+        skip={currentPage * pageSize}
       />
     </div>
   );

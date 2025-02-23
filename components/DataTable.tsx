@@ -22,7 +22,7 @@ export default function DataTable({ columns, data, loading }: DataTableProps) {
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className='bg-[#c0e3e5] text-[#322625] px-6 py-4 text-left text-sm font-bold uppercase tracking-wider whitespace-nowrap border-2 border-gray-200'
+                  className='bg-[#c0e3e5]    text-[#322625] px-6 py-4 text-left  text-sm uppercase tracking-wider whitespace-nowrap border-2 border-gray-200'
                 >
                   {column.label}
                 </th>

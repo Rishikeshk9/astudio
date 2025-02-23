@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        neutra: ['Neutra Text', 'Arial', 'sans-serif'],
+        neutra: ['Neutra Text Book', 'Neutra Text Bold', 'Arial', 'sans-serif'],
+        neutraBold: ['Neutra Text Bold', 'Arial', 'sans-serif'],
       },
     },
   },
